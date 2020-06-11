@@ -10,6 +10,12 @@ RUN cd /go-ethereum && make geth
 FROM alpine:latest
 
 RUN apk add --no-cache ca-certificates
+
+# curl for determining public ip if it cannot be passed in directly
+RUN apk add --update \
+    curl \
+    && rm -rf /var/cache/apk/*
+
 COPY --from=builder /go-ethereum/build/bin/geth /usr/local/bin/
 
 EXPOSE 8545 8546 8547 30303 30303/udp
